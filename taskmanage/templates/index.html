@@ -1,0 +1,13 @@
+{% extends 'base_generic.html' %}
+
+
+{%block sidebar%}
+{% for task in tasks %}
+    {{ task.task_name }}<br>
+{% endfor %}
+
+{% endblock %}
+
+{%block content%}
+<p> welcome user </p>
+{% endblock %}

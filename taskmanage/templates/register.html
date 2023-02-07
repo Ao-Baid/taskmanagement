@@ -1,0 +1,9 @@
+<h1>Register</h1>
+
+<form method="post" action="">
+    {% csrf_token %}
+    {{method_field('PUT')}}
+    {{form}}
+
+    <input type="submit" value="Register" />
+</form>
