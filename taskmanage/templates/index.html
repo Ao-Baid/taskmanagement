@@ -3,7 +3,7 @@
 
 {%block sidebar%}
 {% for task in tasks %}
-    {{ task.task_name }}<br>
+        <a href="{% url 'task' task.id %}">{{ task.task_name }}</a><br>
 {% endfor %}
 
 {% endblock %}

@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crispy_forms',
     'taskmanage',
+    'django_extensions'
 ]
 
 MIDDLEWARE = [
@@ -124,3 +126,15 @@ STATICFILES_DIRS = ['taskmanage/static']
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Crispy Forms
+CRISPY_TEMPLATE_PACK = 'bootstrap'
+
+# Login Redirect
+LOGIN_REDIRECT_URL = 'login'
+LOGIN_URL = 'login'
+
+GRAPH_MODELS = {
+    'all_applications': True,
+    'group_models': True,
+}

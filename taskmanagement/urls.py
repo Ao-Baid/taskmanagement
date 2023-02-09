@@ -23,5 +23,6 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('taskmanage/', include('taskmanage.urls')),
-    path('', views.index, name='index')
+    path('', views.index, name='index'),
+    path('task/<int:task_id>/', views.task, name='task'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
