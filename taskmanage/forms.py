@@ -3,7 +3,7 @@ from .models import Task, SubTask
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
 from django.contrib.auth import authenticate
-
+from django.contrib.auth.models import User
 
 
 
@@ -30,8 +30,23 @@ class LoginForm(forms.Form):
                 raise forms.ValidationError('User is not active')
         return super(LoginForm, self).clean()
 
+
+
 #create a register form using crispy forms and form helper
 class RegisterForm(forms.Form):
+
+    #get the user model and allow for the save method to be used
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password', 'password2')
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'password': forms.PasswordInput(attrs={'class': 'form-control'}),
+            'password2': forms.PasswordInput(attrs={'class': 'form-control'}),
+        }
+    
+
     username = forms.CharField(label='Username', max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))
     email = forms.EmailField(label='Email', max_length=100, widget=forms.EmailInput(attrs={'class': 'form-control'}))
     password = forms.CharField(label='Password', max_length=100, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
@@ -49,8 +64,15 @@ class RegisterForm(forms.Form):
         password = self.cleaned_data.get('password')
         password2 = self.cleaned_data.get('password2')
         if username and email and password and password2:
+            if User.objects.filter(username=username).exists():
+                raise forms.ValidationError('Username already exists')
+            if User.objects.filter(email=email).exists():
+                raise forms.ValidationError('Email already exists')
             if password != password2:
                 raise forms.ValidationError('Passwords do not match')
+            #save the user
+            user = User.objects.create_user(username=username, email=email, password=password)
+            user.save()
         return super(RegisterForm, self).clean()
 
 #create a task form using crispy forms and form helper

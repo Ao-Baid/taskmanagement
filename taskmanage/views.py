@@ -1,13 +1,10 @@
 from django.shortcuts import render
 from .models import Task, SubTask
-from .forms import LoginForm
+from .forms import LoginForm, RegisterForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
+from django.contrib.auth import logout, authenticate, login
 from django.shortcuts import redirect
-from django.contrib.auth import login
-from django.contrib.auth import authenticate
-from .models import Task, SubTask
 
 @login_required(login_url='login')
 def index(request):
@@ -15,9 +12,13 @@ def index(request):
     context = {'tasks': tasks}
     return render(request, 'index.html', context)
 
-@login_required(login_url='login')
 def registerPage(request):
-    form = UserCreationForm()
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            return redirect('login')
+    else:
+        form = RegisterForm()
     context = {'form': form}
     return render(request, 'register.html', context)
 
