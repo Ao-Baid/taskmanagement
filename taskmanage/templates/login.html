@@ -5,20 +5,13 @@
 
 <body class="loginpage">
     <div class="login d-flex justify-content-center" >
-
-        {% if next %}
-            {% if user.is_authenticated %}
-            {% else %}
-                <p>Please login to see this page.</p>
-            {% endif %}
-        {% endif %}
         <h1>Log in</h1>
         <form method="post" class="form-row align-items-center">
             {% csrf_token %}
             {% if next %}
                 <input type="hidden" name="next" value="{{ next }}" />
             {% endif %}
-            {{ form.as_p }}
+            {{ form|crispy}}
             <input type="submit" value="login" />
             <input type="hidden" name="next" value="{{ next }}" />
         </form>

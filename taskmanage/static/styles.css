@@ -1,7 +1,9 @@
 body {
     min-height: 100vh;
     display: flex;
+    position: relative;
 }
+
 
 .sidebar {
     min-width: 350px;
@@ -11,10 +13,17 @@ body {
 }
 
 .content {
-    
-    flex-grow: 1;
     display: flex;
+    min-width: calc(100% - 350px);
+    justify-content: center;
+    flex-direction: column;
 }
+
+.main-container {
+    display : flex;
+    flex-grow: 1;
+}
+
 
 .inner-text-sidebar {
     font-weight: 700;
@@ -45,8 +54,31 @@ body {
     padding: 10px;
 }
 
-.loginpage {
-    margin: auto;
-    width: 50%;
+
+
+.card {
+    border:rgb(34, 34, 34) 1px solid;
+    border-radius: 5px;
     padding: 10px;
+    margin: 10px;
+    background-color: grey;
+    transform: scale(1.5);
+}
+
+.loginpage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* table */
+table {
+    border-collapse: collapse;
+    width: 50%;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
 }

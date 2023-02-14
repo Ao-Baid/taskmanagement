@@ -24,5 +24,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('taskmanage/', include('taskmanage.urls')),
     path('', views.index, name='index'),
-    path('task/<int:task_id>/', views.task, name='task'),
+    path('task/<str:task_name>/', views.task_view, name='task'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

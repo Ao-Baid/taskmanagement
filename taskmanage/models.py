@@ -7,8 +7,6 @@ from django.urls import reverse
 task_status = [('todo', 'To Do'), ('inprogress', 'In Progress'), ('done', 'Done'), ('cancelled', 'Cancelled')]
 # Create your models here.
 class Task(models.Model):
-    
-
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, limit_choices_to={'is_staff': False})
     task_name = models.CharField(max_length=100)
     task_description = models.TextField()

@@ -1,0 +1,9 @@
+{% extends 'base_generic.html' %}
+
+{%block sidebar%}
+    <div class="justify-content-center">
+      {% for task in tasks %}
+        <a href="{% url 'task' task.id %}">{{ task.task_name }}</a><br>
+      {% endfor %}
+    </div>
+{% endblock %}

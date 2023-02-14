@@ -2,12 +2,10 @@
 
 
 {%block sidebar%}
-{% for task in tasks %}
-        <a href="{% url 'task' task.id %}">{{ task.task_name }}</a><br>
-{% endfor %}
+
 
 {% endblock %}
 
 {%block content%}
-<p> welcome user </p>
+<p style="vertical-align: top; display: flex;"> welcome user </p>
 {% endblock %}
