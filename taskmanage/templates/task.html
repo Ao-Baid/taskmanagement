@@ -6,18 +6,27 @@
 <body>
 
 {%block content%}
-    {% for subtask in subtasks %}
-    <table class="table table-bordered table-striped table-hover table-sm table-condensed m-lg-1">
-        <tr class="border">
-            <td>{{ subtask.subtask_name }}</td>
-            <td>{{ subtask.subtask_description }}</td>
-            <td>{{ subtask.status }}</td>
-            <td>{{ subtask.task }}</td>
-            <td>{{ subtask.created_at }}</td>
-            <td>{{ subtask.updated_at }}</td>
-        </tr>
-    </table>
-    {% endfor %}
+    <div class="d-flex align-items-center flex-column ">
+        <h1 class="pt-3">Subtasks for {{task_name}}</h1>
+        {% for subtask in subtasks %}
+        <table class="table table-bordered table-striped table-hover table-sm table-condensed pt-3">
+            <tr class="border">
+                <th>Subtask Name</th>
+                <th>Subtask Description</th>
+                <th>Subtask Status</th>
+                <th>Subtask Created At</th>
+                <th>Subtask Updated At</th>
+            </tr>
+            <tr class="border">
+                <td>{{ subtask.subtask_name }}</td>
+                <td>{{ subtask.subtask_description }}</td>
+                <td>{{ subtask.subtask_status }}</td>
+                <td>{{ subtask.subtask_created_at }}</td>
+                <td>{{ subtask.subtask_updated_at }}</td>
+            </tr>
+        </table>
+        {% endfor %}
+    </div>
 {%endblock%}
 </body>
 <p>

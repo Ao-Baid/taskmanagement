@@ -128,7 +128,7 @@ STATICFILES_DIRS = ['taskmanage/static']
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Crispy Forms
-CRISPY_TEMPLATE_PACK = 'bootstrap'
+CRISPY_TEMPLATE_PACK = 'uni_form'
 
 # Login Redirect
 LOGIN_REDIRECT_URL = 'login'

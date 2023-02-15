@@ -2,19 +2,18 @@
 {% load crispy_forms_tags %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
 
 <body class="loginpage">
-    <div class="login d-flex justify-content-center" >
-        <h1>Log in</h1>
-        <form method="post" class="form-row align-items-center">
+    <div class="card">
+        <h1 style="text-align: center;">Login</h1>
+        <form method="post">
             {% csrf_token %}
-            {% if next %}
-                <input type="hidden" name="next" value="{{ next }}" />
-            {% endif %}
-            {{ form|crispy}}
-            <input type="submit" value="login" />
-            <input type="hidden" name="next" value="{{ next }}" />
+            {{form|crispy}}
+            {{form.non_field_errors}}
+            <button type="submit" class="btn btn-primary mx-auto d-block mt-3">Enter</button>
+            <a href="{% url 'register' %}" class="btn btn-primary mx-auto d-block mt-3">Register</a>
+
         </form>
-        <span>Don't have an account? <a href="{% url 'register' %}">Sign up</a></span>
     </div>
-<body>
+</body>

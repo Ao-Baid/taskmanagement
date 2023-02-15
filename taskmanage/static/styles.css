@@ -1,7 +1,6 @@
 body {
     min-height: 100vh;
     display: flex;
-    position: relative;
 }
 
 
@@ -15,7 +14,7 @@ body {
 .content {
     display: flex;
     min-width: calc(100% - 350px);
-    justify-content: center;
+    justify-content: flex-start;
     flex-direction: column;
 }
 
