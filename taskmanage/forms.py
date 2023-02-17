@@ -90,3 +90,33 @@ class TaskForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Submit'))
+
+
+class SubTaskForm(forms.ModelForm):
+
+    subtask_name = forms.CharField(label='Subtask Name', max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    subtask_description = forms.CharField(label='Subtask Description', max_length=100, widget=forms.Textarea(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = SubTask
+        fields = ('subtask_name', 'subtask_description')
+        widgets = {
+            'subtask_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'subtask_description': forms.Textarea(attrs={'class': 'form-control'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(SubTaskForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.add_input(Submit('submit', 'Submit'))
+    
+    #the task name is in the url after task/ therefore, the task name is passed to the form to allow the subtask to be saved to the correct task
+    def save(self, task_name):
+        subtask_name = self.cleaned_data.get('subtask_name')
+        subtask_description = self.cleaned_data.get('subtask_description')
+        if subtask_name and subtask_description:
+            task = Task.objects.get(task_name=task_name)
+            subtask = SubTask.objects.create(subtask_name=subtask_name, subtask_description=subtask_description, task=task)
+            subtask.save()
+        return super(SubTaskForm, self).save()

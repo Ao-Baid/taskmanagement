@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import Task, SubTask
-from .forms import LoginForm, RegisterForm
+from .forms import LoginForm, RegisterForm, TaskForm, SubTaskForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
@@ -41,7 +41,14 @@ def loginPage(request):
 def task_view(request, task_name):
     tasks = Task.objects.filter(user_id=request.user)
     subtasks = SubTask.objects.filter(task__task_name=task_name)
-    context = {'subtasks': subtasks , 'tasks': tasks, 'task_name': task_name} 
+    form = SubTaskForm()
+    #if form is valud, save the subtask to the database and refresh the page
+    if request.method == 'POST':
+        form = SubTaskForm(request.POST)
+        if form.is_valid():
+            form.save(task_name=task_name)
+            return redirect('task', task_name=task_name)
+    context = {'subtasks': subtasks , 'tasks': tasks, 'task_name': task_name , 'form': form}
     return render(request, 'task.html', context)
 
 

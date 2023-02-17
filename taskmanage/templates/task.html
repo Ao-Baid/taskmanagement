@@ -1,31 +1,42 @@
 {% extends "base_generic.html" %}
-
+{%load crispy_forms_tags%}
 
 
 
 <body>
 
 {%block content%}
-    <div class="d-flex align-items-center flex-column ">
+    <div class="d-flex justify-content-center">
         <h1 class="pt-3">Subtasks for {{task_name}}</h1>
-        {% for subtask in subtasks %}
-        <table class="table table-bordered table-striped table-hover table-sm table-condensed pt-3">
-            <tr class="border">
-                <th>Subtask Name</th>
-                <th>Subtask Description</th>
-                <th>Subtask Status</th>
-                <th>Subtask Created At</th>
-                <th>Subtask Updated At</th>
-            </tr>
-            <tr class="border">
-                <td>{{ subtask.subtask_name }}</td>
-                <td>{{ subtask.subtask_description }}</td>
-                <td>{{ subtask.subtask_status }}</td>
-                <td>{{ subtask.subtask_created_at }}</td>
-                <td>{{ subtask.subtask_updated_at }}</td>
-            </tr>
-        </table>
-        {% endfor %}
+    </div>
+    <div class="d-flex justify-content-center">
+        <div class="d-flex align-items-center pt-5 w-75">
+            <table class="table table-bordered table-striped table-hover table-sm table-condensed pt-3 table-fixed">
+                <tr class="border">
+                    <th>Subtask Name</th>
+                    <th>Subtask Description</th>
+                    <th>Subtask Status</th>
+                    <th>Subtask Created At</th>
+                    <th>Subtask Updated At</th>
+                </tr>
+                {% for subtask in subtasks %}
+                <tr class="border">
+                    <td>{{ subtask.subtask_name }}</td>
+                    <td>{{ subtask.subtask_description }}</td>
+                    <td>{{ subtask.subtask_status }}</td>
+                    <td>{{ subtask.subtask_created_at }}</td>
+                    <td>{{ subtask.subtask_updated_at }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center">
+        <form method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-primary">Add Subtask</button>
+        </form>
     </div>
 {%endblock%}
 </body>
