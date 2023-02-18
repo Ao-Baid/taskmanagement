@@ -6,14 +6,19 @@
 
 <body class="loginpage">
     <div class="card">
-        <h1 style="text-align: center;">Login</h1>
-        <form method="post">
-            {% csrf_token %}
-            {{form|crispy}}
-            {{form.non_field_errors}}
-            <button type="submit" class="btn btn-primary mx-auto d-block mt-3">Enter</button>
-            <a href="{% url 'register' %}" class="btn btn-primary mx-auto d-block mt-3">Register</a>
-
-        </form>
+        <div class="card-header mb-2">
+            <h1 class="text-center">Login</h1>
+        </div>
+        <div class="card-contents">
+            <form method="post">
+                {% csrf_token %}
+                {{form|crispy}}
+                {{form.non_field_errors}}
+                <button type="submit" class="btn btn-primary mx-auto d-block mt-3">Login</button>
+            </form>
+        </div>
+        <div class="card-footer">
+            <p class="text-center w-100">Don't have an account? <a href="{% url 'register' %}">Register</a></p>
+        </div>
     </div>
 </body>

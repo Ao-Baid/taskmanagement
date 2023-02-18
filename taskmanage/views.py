@@ -5,6 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
 from django.shortcuts import redirect
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 @login_required(login_url='login')
 def index(request):
@@ -42,13 +43,25 @@ def task_view(request, task_name):
     tasks = Task.objects.filter(user_id=request.user)
     subtasks = SubTask.objects.filter(task__task_name=task_name)
     form = SubTaskForm()
-    #if form is valud, save the subtask to the database and refresh the page
     if request.method == 'POST':
         form = SubTaskForm(request.POST)
         if form.is_valid():
             form.save(task_name=task_name)
             return redirect('task', task_name=task_name)
-    context = {'subtasks': subtasks , 'tasks': tasks, 'task_name': task_name , 'form': form}
+    
+    #allow for pagination of subtasks
+    paginator = Paginator(subtasks, 5)
+    page = request.GET.get('page')
+    pages = paginator.get_page(page)
+    try:
+        subtasks = paginator.page(page)
+    except PageNotAnInteger:
+        subtasks = paginator.page(1)
+    except EmptyPage:
+        subtasks = paginator.page(paginator.num_pages)
+
+
+    context = {'subtasks': subtasks , 'tasks': tasks, 'task_name': task_name , 'form': form, 'page': page, 'pages': pages}
     return render(request, 'task.html', context)
 
 

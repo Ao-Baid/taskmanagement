@@ -9,13 +9,19 @@
 
 <body class="loginpage">
     <div class="card">
-        <h1 style="text-align: center;">Register</h1>
-        <form method="post">
-            {% csrf_token %}
-            {{form|crispy}}
-            {{form.non_field_errors}}
-            <button type="submit" class="btn btn-primary mx-auto d-block mt-3">Register</button>
-            <a href="{% url 'login' %}" class="btn btn-primary mx-auto d-block mt-3">Login</a>
-        </form>
+        <div class="card-header mb-2">
+            <h1 class="text-center">Register</h1>
+        </div>
+        <div class="card-contents">
+            <form method="post">
+                {% csrf_token %}
+                {{form|crispy}}
+                {{form.non_field_errors}}
+                <button type="submit" class="btn btn-primary mx-auto d-block mt-3">Register</button>
+            </form>
+        </div>
+        <div class="card-footer">
+            <p class="text-center w-100">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+        </div>
     </div>
-</body>``
+</body>
