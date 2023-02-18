@@ -29,14 +29,17 @@
                 </tr>
                 {% endfor %}
             </table>
+            
         </div>
     </div>
-    {% if pages.has_previous %}
-        <a href="?page={{ pages.previous_page_number }}">Previous</a>
-    {% endif %}
-    {% if pages.has_next %}
-        <a href="?page={{ pages.next_page_number }}">Next</a>
-    {% endif %}
+    <div class="d-flex justify-content-center">
+        {% if pages.has_previous %}
+                <a href="?page={{ pages.previous_page_number }}" class="btn btn-btn-primary mb-3">Previous</a>
+            {% endif %}
+            {% if pages.has_next %}
+                <a href="?page={{ pages.next_page_number }}" class="btn btn-btn-primary mb-3">Next</a>
+            {% endif %}
+    </div>
     <div class="d-flex justify-content-around">
         <form method="post">
             {% csrf_token %}

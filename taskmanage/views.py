@@ -50,7 +50,7 @@ def task_view(request, task_name):
             return redirect('task', task_name=task_name)
     
     #allow for pagination of subtasks
-    paginator = Paginator(subtasks, 5)
+    paginator = Paginator(subtasks, 10)
     page = request.GET.get('page')
     pages = paginator.get_page(page)
     try:
