@@ -8,14 +8,19 @@ body {
     min-width: 350px;
     width: auto;
     background-color: rgb(34, 34, 34);
+    border-radius: 0px 10px 10px 0px;
 
 }
 
 .content {
     display: flex;
     min-width: calc(100% - 350px);
-    justify-content: flex-start;
     flex-direction: column;
+}
+
+.center {
+    justify-content: center;
+    align-items: center;
 }
 
 .main-container {

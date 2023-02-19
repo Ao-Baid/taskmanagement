@@ -70,13 +70,12 @@ def logoutUser(request):
     return redirect('login')
 
 def addtask(request):
+    form = TaskForm()
     tasks = Task.objects.filter(user_id=request.user)
     if request.method == 'POST':
-        title = request.POST['title']
-        description = request.POST['description']
-        task = Task.objects.create(title=title, description=description, user_id=request.user)
-        task.save()
-        return redirect('task')
-    
-    context = {tasks: tasks}
+        form = TaskForm(request.POST)
+        if form.is_valid():
+            form.save(user_id=request.user)
+            return redirect('index')
+    context = {'tasks': tasks, 'form': form}
     return render(request, 'addtask.html', context)

@@ -90,6 +90,13 @@ class TaskForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Submit'))
+    
+    #save the task to the database
+    def save(self, user_id):
+        task_name = self.cleaned_data.get('task_name')
+        task_description = self.cleaned_data.get('task_description')
+        task = Task(task_name=task_name, task_description=task_description, user_id=user_id)
+        task.save()
 
 
 class SubTaskForm(forms.ModelForm):
@@ -117,6 +124,5 @@ class SubTaskForm(forms.ModelForm):
         subtask_description = self.cleaned_data.get('subtask_description')
         if subtask_name and subtask_description:
             task = Task.objects.get(task_name=task_name)
-            subtask = SubTask.objects.create(subtask_name=subtask_name, subtask_description=subtask_description, task=task)
+            subtask = SubTask(subtask_name=subtask_name, subtask_description=subtask_description, task_id=task.id)
             subtask.save()
-        return super(SubTaskForm, self).save()
