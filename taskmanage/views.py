@@ -79,3 +79,21 @@ def addtask(request):
             return redirect('index')
     context = {'tasks': tasks, 'form': form}
     return render(request, 'addtask.html', context)
+
+def subtask_delete(request, id):
+    subtask = SubTask.objects.get(id=id)
+    task_name = subtask.task.task_name
+    subtask.delete()
+    return redirect('task', task_name=task_name)
+
+def subtask_update(request, id):
+    subtask = SubTask.objects.get(id=id)
+    task_name = subtask.task.task_name
+    form = SubTaskForm(instance=subtask)
+    if request.method == 'POST':
+        form = SubTaskForm(request.POST, instance=subtask)
+        if form.is_valid():
+            form.save()
+            return redirect('task', task_name=task_name)
+    context = {'form': form, 'task_name': task_name}
+    return render(request, 'subtask_update.html', context)

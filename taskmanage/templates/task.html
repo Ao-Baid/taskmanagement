@@ -18,6 +18,7 @@
                     <th>Subtask Status</th>
                     <th>Subtask Created At</th>
                     <th>Subtask Updated At</th>
+                    <th>Subtask Actions</th>
                 </tr>
                 {% for subtask in subtasks %}
                 <tr class="border">
@@ -26,6 +27,10 @@
                     <td>{{ subtask.subtask_status }}</td>
                     <td>{{ subtask.subtask_created_at }}</td>
                     <td>{{ subtask.subtask_updated_at }}</td>
+                    <td>
+                        <a href="{% url 'subtask_update' subtask.id %}" class="btn btn-primary">Update</a>
+                        <a href="{% url 'subtask_delete' subtask.id %}" class="btn btn-success">Complete</a>
+                    </td>
                 </tr>
                 {% endfor %}
             </table>
