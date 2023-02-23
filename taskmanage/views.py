@@ -42,6 +42,7 @@ def loginPage(request):
 #task_view takes a string argument task_name from the url and uses it to filter the subtasks
 def task_view(request, task_id):
     tasks = Task.objects.filter(user_id=request.user)
+    task_name = Task.objects.filter(id=task_id).values_list('task_name', flat=True).get()
     task = get_object_or_404(Task, pk=task_id)
     subtasks = SubTask.objects.filter(task=task)
     form = SubTaskForm()
@@ -62,7 +63,7 @@ def task_view(request, task_id):
     except EmptyPage:
         subtasks = paginator.page(paginator.num_pages)
 
-    context = {'subtasks': subtasks, 'tasks': tasks, 'task': task, 'form': form, 'page': page, 'pages': pages}
+    context = {'subtasks': subtasks, 'tasks': tasks, 'task': task, 'form': form, 'page': page, 'pages': pages, 'task_name': task_name}
     return render(request, 'task.html', context)
 
 def logoutUser(request):
