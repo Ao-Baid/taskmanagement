@@ -4,6 +4,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 
 
 
@@ -101,8 +102,10 @@ class TaskForm(forms.ModelForm):
 
 class SubTaskForm(forms.ModelForm):
 
+
     subtask_name = forms.CharField(label='Subtask Name', max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))
     subtask_description = forms.CharField(label='Subtask Description', max_length=100, widget=forms.Textarea(attrs={'class': 'form-control'}))
+    
 
     class Meta:
         model = SubTask
@@ -119,10 +122,11 @@ class SubTaskForm(forms.ModelForm):
         self.helper.add_input(Submit('submit', 'Submit'))
     
     #the task name is in the url after task/ therefore, the task name is passed to the form to allow the subtask to be saved to the correct task
-    def save(self, task_name):
-        subtask_name = self.cleaned_data.get('subtask_name')
-        subtask_description = self.cleaned_data.get('subtask_description')
-        if subtask_name and subtask_description:
-            task = Task.objects.get(task_name=task_name)
-            subtask = SubTask(subtask_name=subtask_name, subtask_description=subtask_description, task_id=task.id)
+    def save(self, commit=True, task_id=None):
+        subtask = super().save(commit=False)
+        if task_id is not None:
+            task = Task.objects.get(pk=task_id)
+            subtask.task = task
+        if commit:
             subtask.save()
+        return subtask

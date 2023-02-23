@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
 from django.shortcuts import redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import get_object_or_404
 
 @login_required(login_url='login')
 def index(request):
@@ -39,15 +40,16 @@ def loginPage(request):
     return render(request, 'login.html', context)
 
 #task_view takes a string argument task_name from the url and uses it to filter the subtasks
-def task_view(request, task_name):
+def task_view(request, task_id):
     tasks = Task.objects.filter(user_id=request.user)
-    subtasks = SubTask.objects.filter(task__task_name=task_name)
+    task = get_object_or_404(Task, pk=task_id)
+    subtasks = SubTask.objects.filter(task=task)
     form = SubTaskForm()
     if request.method == 'POST':
         form = SubTaskForm(request.POST)
         if form.is_valid():
-            form.save(task_name=task_name)
-            return redirect('task', task_name=task_name)
+            form.save(commit=True, task_id=task.id)
+            return redirect('task', task_id=task_id)
     
     #allow for pagination of subtasks
     paginator = Paginator(subtasks, 10)
@@ -60,10 +62,8 @@ def task_view(request, task_name):
     except EmptyPage:
         subtasks = paginator.page(paginator.num_pages)
 
-
-    context = {'subtasks': subtasks , 'tasks': tasks, 'task_name': task_name , 'form': form, 'page': page, 'pages': pages}
+    context = {'subtasks': subtasks, 'tasks': tasks, 'task': task, 'form': form, 'page': page, 'pages': pages}
     return render(request, 'task.html', context)
-
 
 def logoutUser(request):
     logout(request)
@@ -82,9 +82,9 @@ def addtask(request):
 
 def subtask_delete(request, id):
     subtask = SubTask.objects.get(id=id)
-    task_name = subtask.task.task_name
+    task_id = get_object_or_404(Task, pk=subtask.task.id)
     subtask.delete()
-    return redirect('task', task_name=task_name)
+    return redirect('task', task_id=task_id.id)
 
 def subtask_update(request, id):
     subtask = SubTask.objects.get(id=id)

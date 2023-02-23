@@ -17,11 +17,16 @@ class TaskAdmin(admin.ModelAdmin):
 admin.site.register(Task, TaskAdmin)
 
 class SubTaskAdmin(admin.ModelAdmin):
-    list_display = ('get_task', 'subtask_name', 'subtask_description', 'subtask_status', 'subtask_created_at', 'subtask_updated_at')
+    list_display = ('get_task', 'subtask_name', 'subtask_description', 'subtask_status', 'subtask_created_at', 'subtask_updated_at', 'get_task')
 
     @admin.display(description='Task')
     def get_task(self, obj):
         return obj.task
+
+    @admin.display(description='Task')
+    def get_task(self, obj):
+        return obj.task
+
 
 admin.site.register(SubTask, SubTaskAdmin)
 
