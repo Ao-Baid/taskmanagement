@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 
 
-task_status = [('todo', 'To Do'), ('inprogress', 'In Progress'), ('done', 'Done'), ('cancelled', 'Cancelled')]
+task_status = [('To Do', 'To Do'), ('In Progress', 'In Progress'), ('done', 'Done'), ('cancelled', 'Cancelled')]
 # Create your models here.
 class Task(models.Model):
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, limit_choices_to={'is_staff': False})
@@ -27,10 +27,11 @@ class Task(models.Model):
         return self.user_id
 
 class SubTask(models.Model):
+
     task = models.ForeignKey(Task, on_delete=models.CASCADE, null=True)
     subtask_name = models.CharField(max_length=100)
     subtask_description = models.TextField()
-    subtask_status = models.CharField(max_length=100, choices=task_status, default="todo")
+    subtask_status = models.CharField(max_length=100, choices=task_status, default="To Do")
     subtask_created_at = models.DateTimeField(auto_now_add=True)
     subtask_updated_at = models.DateTimeField(auto_now=True)
 

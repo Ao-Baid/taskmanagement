@@ -34,3 +34,4 @@ admin.site.register(SubTask, SubTaskAdmin)
 class LogEntryAdmin(admin.ModelAdmin):
     list_display = ('action_time', 'user', 'content_type', 'object_repr', 'action_flag', 'change_message')
 
+admin.site.register(LogEntry, LogEntryAdmin)

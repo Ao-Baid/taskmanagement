@@ -95,10 +95,11 @@ def subtask_update(request, id):
     task_id = get_object_or_404(Task, pk=subtask.task.id)
     task_name = subtask.task.task_name
     form = UpdateSubTaskForm(instance=subtask)
+    #handle the status update and post
     if request.method == 'POST':
-        form = SubTaskForm(request.POST, instance=subtask)
+        form = UpdateSubTaskForm(request.POST, instance=subtask)
         if form.is_valid():
-            form.save()
+            form.save(commit=True)
             return redirect('task', task_id=task_id.id)
     context = {'form': form, 'task_name': task_name, 'tasks': tasks}
     return render(request, 'subtask_update.html', context)

@@ -131,6 +131,7 @@ class SubTaskForm(forms.ModelForm):
         return subtask
     
 
+#create a updatesubtaskform that allows the user to update the subtasks name, description and status
 class UpdateSubTaskForm(forms.ModelForm):
     class Meta:
         model = SubTask
@@ -141,26 +142,23 @@ class UpdateSubTaskForm(forms.ModelForm):
             'subtask_status': forms.Select(attrs={'class': 'form-control'}),
         }
 
-
     def __init__(self, *args, **kwargs):
         super(UpdateSubTaskForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
-        self.helper.layout = Layout( 
+        self.helper.layout = Layout(
             Fieldset(
-            'Update Subtask',
-            'subtask_name',
-            'subtask_description',
-            'subtask_status',
-        ),
-        Submit('submit', 'Submit', css_class='btn btn-primary d-block mx-auto mt-2'),
+                'Update Subtask',
+                'subtask_name',
+                'subtask_description',
+                'subtask_status',
+            ),
+            Submit('submit', 'Submit', css_class='btn-success d-block mx-auto mt-3')
         )
-    #the task name is in the url after task/ therefore, the task name is passed to the form to allow the subtask to be saved to the correct task
-    def save(self, commit=True, task_id=None):
+
+    # save the updated subtask to the database
+    def save(self, commit=True, **kwargs):
         subtask = super().save(commit=False)
-        if task_id is not None:
-            task = Task.objects.get(pk=task_id)
-            subtask.task = task
         if commit:
             subtask.save()
         return subtask
