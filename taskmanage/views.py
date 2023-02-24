@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import Task, SubTask
-from .forms import LoginForm, RegisterForm, TaskForm, SubTaskForm
+from .forms import LoginForm, RegisterForm, TaskForm, SubTaskForm, UpdateSubTaskForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
@@ -52,6 +52,8 @@ def task_view(request, task_id):
             form.save(commit=True, task_id=task.id)
             return redirect('task', task_id=task_id)
     
+
+
     #allow for pagination of subtasks
     paginator = Paginator(subtasks, 10)
     page = request.GET.get('page')
@@ -88,13 +90,15 @@ def subtask_delete(request, id):
     return redirect('task', task_id=task_id.id)
 
 def subtask_update(request, id):
+    tasks = Task.objects.filter(user_id=request.user)
     subtask = SubTask.objects.get(id=id)
+    task_id = get_object_or_404(Task, pk=subtask.task.id)
     task_name = subtask.task.task_name
-    form = SubTaskForm(instance=subtask)
+    form = UpdateSubTaskForm(instance=subtask)
     if request.method == 'POST':
         form = SubTaskForm(request.POST, instance=subtask)
         if form.is_valid():
             form.save()
-            return redirect('task', task_name=task_name)
-    context = {'form': form, 'task_name': task_name}
+            return redirect('task', task_id=task_id.id)
+    context = {'form': form, 'task_name': task_name, 'tasks': tasks}
     return render(request, 'subtask_update.html', context)
