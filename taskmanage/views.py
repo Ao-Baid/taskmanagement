@@ -46,12 +46,18 @@ def task_view(request, task_id):
     task = get_object_or_404(Task, pk=task_id)
     subtasks = SubTask.objects.filter(task=task)
     form = SubTaskForm()
+    task_complete = False
+
+
     if request.method == 'POST':
         form = SubTaskForm(request.POST)
         if form.is_valid():
             form.save(commit=True, task_id=task.id)
             return redirect('task', task_id=task_id)
     
+    if subtasks.count() == 0:
+        task_complete = True
+
 
 
     #allow for pagination of subtasks
@@ -65,7 +71,7 @@ def task_view(request, task_id):
     except EmptyPage:
         subtasks = paginator.page(paginator.num_pages)
 
-    context = {'subtasks': subtasks, 'tasks': tasks, 'task': task, 'form': form, 'page': page, 'pages': pages, 'task_name': task_name}
+    context = {'subtasks': subtasks, 'tasks': tasks, 'task': task, 'form': form, 'page': page, 'pages': pages, 'task_name': task_name, 'task_complete': task_complete}
     return render(request, 'task.html', context)
 
 def logoutUser(request):
@@ -103,3 +109,8 @@ def subtask_update(request, id):
             return redirect('task', task_id=task_id.id)
     context = {'form': form, 'task_name': task_name, 'tasks': tasks}
     return render(request, 'subtask_update.html', context)
+
+def task_delete(request, id):
+    task = Task.objects.get(id=id)
+    task.delete()
+    return redirect('index')

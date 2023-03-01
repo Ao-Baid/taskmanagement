@@ -16,6 +16,8 @@ body {
     display: flex;
     min-width: calc(100% - 350px);
     flex-direction: column;
+    height: 100%;
+    position: relative;
 }
 
 .center {
@@ -86,4 +88,10 @@ table {
 th, td {
     text-align: left;
     padding: 8px;
+}
+
+
+.last-item{
+    margin-top: auto;
+    padding-bottom: 10px;
 }
