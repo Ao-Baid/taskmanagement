@@ -95,3 +95,14 @@ th, td {
     margin-top: auto;
     padding-bottom: 10px;
 }
+
+
+
+#hoverToDelete:hover{
+    text-decoration: line-through;
+}
+
+#noUrlDecoration a{
+    color : black;
+    text-decoration: none;
+}

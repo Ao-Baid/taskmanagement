@@ -44,6 +44,7 @@ def task_view(request, task_id):
     tasks = Task.objects.filter(user_id=request.user)
     task_name = Task.objects.filter(id=task_id).values_list('task_name', flat=True).get()
     task = get_object_or_404(Task, pk=task_id)
+    task_description = Task.objects.filter(id=task_id).values_list('task_description', flat=True).get()
     subtasks = SubTask.objects.filter(task=task)
     form = SubTaskForm()
     task_complete = False
@@ -71,7 +72,7 @@ def task_view(request, task_id):
     except EmptyPage:
         subtasks = paginator.page(paginator.num_pages)
 
-    context = {'subtasks': subtasks, 'tasks': tasks, 'task': task, 'form': form, 'page': page, 'pages': pages, 'task_name': task_name, 'task_complete': task_complete}
+    context = {'subtasks': subtasks, 'tasks': tasks, 'task': task, 'form': form, 'page': page, 'pages': pages, 'task_name': task_name, 'task_complete': task_complete, 'task_description': task_description}
     return render(request, 'task.html', context)
 
 def logoutUser(request):
