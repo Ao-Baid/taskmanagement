@@ -7,6 +7,7 @@ from django.contrib.auth import logout, authenticate, login
 from django.shortcuts import redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
 
 @login_required(login_url='login')
 def index(request):
@@ -26,17 +27,20 @@ def registerPage(request):
 
 
 def loginPage(request):
+    admin_login_url = reverse('admin:login')
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
+            #the username field can be used for both username and email
+            email = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
+            user = authenticate(username=username, email=email, password=password)
             login(request, user)
             return redirect('index')
     else:
         form = LoginForm()
-    context = {'form': form}
+    context = {'form': form, 'admin_login_url': admin_login_url}
     return render(request, 'login.html', context)
 
 #task_view takes a string argument task_name from the url and uses it to filter the subtasks
@@ -48,6 +52,7 @@ def task_view(request, task_id):
     subtasks = SubTask.objects.filter(task=task)
     form = SubTaskForm()
     task_complete = False
+    task_counts = {}
 
 
     if request.method == 'POST':
@@ -72,7 +77,7 @@ def task_view(request, task_id):
     except EmptyPage:
         subtasks = paginator.page(paginator.num_pages)
 
-    context = {'subtasks': subtasks, 'tasks': tasks, 'task': task, 'form': form, 'page': page, 'pages': pages, 'task_name': task_name, 'task_complete': task_complete, 'task_description': task_description}
+    context = {'subtasks': subtasks, 'tasks': tasks, 'task': task, 'form': form, 'page': page, 'pages': pages, 'task_name': task_name, 'task_complete': task_complete, 'task_description': task_description, 'task_counts': task_counts}
     return render(request, 'task.html', context)
 
 def logoutUser(request):

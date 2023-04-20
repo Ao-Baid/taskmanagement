@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 
 
-task_status = [('To Do', 'To Do'), ('In Progress', 'In Progress'), ('done', 'Done'), ('cancelled', 'Cancelled')]
+task_status = [('To Do', 'To Do'), ('In Progress', 'In Progress'), ('Done', 'Done'), ('cancelled', 'Cancelled')]
 # Create your models here.
 class Task(models.Model):
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, limit_choices_to={'is_staff': False})

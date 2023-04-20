@@ -5,7 +5,7 @@
 {%block sidebar%}
     <div class="justify-content-center">
       {% for task in tasks %}
-        <a href="{% url 'task' task.id %}">{{ task.task_name }}</a><br>
+        <a href="{% url 'task' task.id %}">{{ task.task_name }}: {{task.task_created_at}}</a><br>
       {% endfor %}
     </div>
 {% endblock %}

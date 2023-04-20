@@ -12,6 +12,7 @@ from django.shortcuts import get_object_or_404
 class LoginForm(forms.Form):
     username = forms.CharField(label='Username', max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(label='Password', max_length=100, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    
 
     def __init__(self, *args, **kwargs):
         super(LoginForm, self).__init__(*args, **kwargs)
@@ -21,13 +22,17 @@ class LoginForm(forms.Form):
     
     def clean(self):
         username = self.cleaned_data.get('username')
+        email = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
         if username and password:
             user = authenticate(username=username, password=password)
             if not user:
                 raise forms.ValidationError('Invalid username or password')
+            if not user.check_password(password):
+                raise forms.ValidationError('Invalid username or password')
             if not user.is_active:
                 raise forms.ValidationError('User is not active')
+        #the username 
         return super(LoginForm, self).clean()
 
 
@@ -76,6 +81,7 @@ class RegisterForm(forms.Form):
         return super(RegisterForm, self).clean()
 
 #create a task form using crispy forms and form helper
+
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
@@ -91,12 +97,17 @@ class TaskForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.add_input(Submit('submit', 'Submit'))
     
-    #save the task to the database
+
+    # save the task to the database
     def save(self, user_id):
         task_name = self.cleaned_data.get('task_name')
         task_description = self.cleaned_data.get('task_description')
         task = Task(task_name=task_name, task_description=task_description, user_id=user_id)
         task.save()
+
+        
+
+
 
 
 class SubTaskForm(forms.ModelForm):
